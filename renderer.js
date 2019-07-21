@@ -1,4 +1,6 @@
 const puppeteer = require("puppeteer")
+var Datastore = require('nedb')
+var loggedHistory = new Datastore({ filename: 'history.db', autoload: true })
 
 let currentMode = 'reference'
 let status
@@ -28,6 +30,15 @@ function getTrackingWithReference(whenDone) {
         try {
             await page.waitForSelector('#stApp_SummaryTracked_packageStatusDesciption_0', { timeout: 2500 })
             status = await page.evaluate(() => document.querySelector('#stApp_SummaryTracked_packageStatusDesciption_0').textContent)
+
+            var log = {
+                reference: ref,
+                status: status
+            }
+
+            loggedHistory.insert(log, function(err, doc) {
+                console.log('Inserted', doc.reference, 'with ID', doc._id);
+            })
         }
         catch (error) {
             status = "INVALID"
@@ -58,6 +69,15 @@ function getTrackingWithNumber(whenDone) {
         try {
             await page.waitForSelector('#stApp_txtPackageStatus', { timeout: 2500 })
             status = await page.evaluate(() => document.querySelector('#stApp_txtPackageStatus').textContent)
+
+            var log = {
+                tracking_number: num,
+                status: status
+            }
+
+            loggedHistory.insert(log, function(err, doc) {
+                console.log('Inserted', doc.reference, 'with ID', doc._id);
+            })
         }
         catch (error) {
             status = "INVALID"
