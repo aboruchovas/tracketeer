@@ -4,8 +4,10 @@ let mainWindow
 
 function createWindow () {
   mainWindow = new BrowserWindow({
-    width: 500,
-    height: 600,
+    width: 800,
+    height: 500,
+    backgroundColor: '#ffffff',
+    show: false,
     webPreferences: {
       nodeIntegration: true
     }
@@ -19,6 +21,10 @@ function createWindow () {
 
   mainWindow.on('closed', function () {
     mainWindow = null
+  })
+
+  mainWindow.once('ready-to-show', () => {
+    mainWindow.show()
   })
 }
 
