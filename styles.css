@@ -123,6 +123,7 @@ body {
     margin: 0.5em 0;
     font-size: 3em;
     text-align: center;
+    transition: transform 0.5s;
 }
 
 #tracking_mode {

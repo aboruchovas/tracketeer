@@ -40,11 +40,6 @@ function getTrackingWithReference(whenDone) {
                 console.log('Inserted', doc.reference, 'with ID', doc._id);
             })
 
-            document.getElementById('history').className= 'flash'
-            setTimeout(() => {
-                document.getElementById('history').className= 'stop_flash'
-            }, 1000)
-
             loadHistory()
         }
         catch (error) {
@@ -86,11 +81,6 @@ function getTrackingWithNumber(whenDone) {
                 console.log('Inserted', doc.tracking_number, 'with ID', doc._id);
             })
 
-            document.getElementById('history').className= 'flash'
-            setTimeout(() => {
-                document.getElementById('history').className= 'stop_flash'
-            }, 1000)
-            
             loadHistory()
         }
         catch (error) {
@@ -105,6 +95,7 @@ function getTrackingWithNumber(whenDone) {
 
 function showStatus(status) {
     document.getElementById('status').innerHTML = status.toUpperCase()
+    animateStatus()
 }
 
 function changeMode() {
@@ -142,8 +133,25 @@ function loadHistory() {
     })
 }
 
-function refreshStatus() {
+function refreshStatus() {    
+    loggedHistory.find({}, function(err, doc) {
+        console.log(doc)
+    })
+}
 
+function animateStatus() {
+    // flash history box after log is added
+    document.getElementById('history').className = 'flash'
+    setTimeout(() => {
+        document.getElementById('history').className = 'stop_flash'
+    }, 1000)
+
+    // jiggle status text
+    document.getElementById('status').style.transform = "translateX(-20px)"
+
+    setTimeout(() => {
+        document.getElementById('status').style.transform = 'translateX(0px)'
+    }, 1000)
 }
 
 document.querySelector('#check').addEventListener('click', async function() {
