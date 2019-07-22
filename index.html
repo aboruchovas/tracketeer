@@ -7,24 +7,34 @@
     </head>
     <body>
         <div id="wrapper">
-            <h1 id="title">UPS TRACKER</h1>
-            <form action="#" id="status_form">
-                <div>
-                    <input type="text" id="tracking" placeholder="ORDER NUMBER">
+            <h1 class="big_title">TRACKETEER</h1>
+            
+            <div id="tracking_search">
+                <h1 class="small_title">UPS</h1>
+                <form action="#" id="status_form">
                     <div>
-                        <select id="tracking_mode" onchange="changeMode()">
-                            <option value="reference">Order number (Supreme)</option>
-                            <option value="track_num">Tracking number</option>
-                        </select>
+                        <input type="text" id="tracking" placeholder="ORDER NUMBER">
+                        <div>
+                            <select id="tracking_mode" onchange="changeMode()">
+                                <option value="reference">Order number (Supreme)</option>
+                                <option value="track_num">Tracking number</option>
+                            </select>
+                        </div>
                     </div>
+                    <div style="text-align: center;">
+                        <button type="button" id="check">CHECK</button>
+                    </div>
+                    <div id="status"></div>
+                </form>
+            </div>
+
+            <div id="tracking_history">
+                <h1 class="small_title">HISTORY</h1>
+                <div id="history">
+                    <ul id="list">
+                    </ul>
                 </div>
-                <div style="text-align: center;">
-                    <button type="button" id="check">CHECK</button>
-                </div>
-                <div id="status">
-    
-                </div>
-            </form>
+            </div>
         </div>
         <!-- You can also require other files to run in this process -->
         <script src="./renderer.js"></script>
