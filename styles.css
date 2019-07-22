@@ -3,14 +3,78 @@ body {
 }
 
 #wrapper {
-    margin: 0 1em;
+    margin: 0 4em;
     font: caption;
 }
 
-#title {
+#tracking_search {
+    float: left;
+}
+
+#tracking_history {
+    float: right;
+}
+
+#history {
+    width: 300px;
+    height: 200px;
+
+    background-color: #ffe1fd;
+    border: 2px solid white;
+
+    text-align: center;
+    overflow: scroll;
+
+}
+
+#history > ul {
+    list-style: none;
+    padding: 0;
+}
+
+#history > ul > li {
+    padding-bottom: 0.5em;
+    font-size: 1.2em;
+
+}
+
+#history > ul > li:after {
+    width: 85%;
+    margin: 0 auto;
+    padding-top: 10px;
+    border-bottom: 1px solid #fcd3f8;
+
+    display: block;
+
+    content: "";
+}
+
+#history > ul > li > a {
+    color: #8369b4;
+    cursor: pointer;
+}
+
+.flash {
+    border: 2px solid #008888 !important;
+    transition: border 0.5s;
+}
+
+.stop_flash {
+    border: 2px solid white !important;
+    transition: border 0.5s;
+}
+
+.big_title {
     text-align: center;
     font-size: 4em;
-    margin: 3em 0 0.5em;
+    margin: 0.5em 0 1em;
+}
+
+.small_title {
+    text-align: center;
+    font-size: 3em;
+    font-weight: 600;
+    margin: 0em 0 0.4em;
 }
 
 #status_form {
@@ -18,7 +82,6 @@ body {
 }
 
 #tracking {
-    /* margin: 3em 0 0; */
     box-sizing: border-box;
     border: 2px solid white;
     font-size: 2em;
@@ -36,7 +99,7 @@ body {
 
 
 #check {
-    margin: 1em 0;
+    margin: 0.4em 0;
     padding: 0.7em 3em;
     font-size: 1em;
 
@@ -44,6 +107,7 @@ body {
     color: white;
 
     border-radius: 1.5em;
+    border-width: 0;
     outline: none;
     cursor: pointer;
 
@@ -56,6 +120,7 @@ body {
 }
 
 #status {
+    margin: 0.5em 0;
     font-size: 3em;
     text-align: center;
 }
