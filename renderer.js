@@ -107,6 +107,15 @@ function changeMode() {
     }
 }
 
+function loadHistory() {
+    loggedHistory.find({}, function(err, doc) {
+        doc.forEach(element => {
+            document.getElementById('list').innerHTML += "<li>" + element.status.toUpperCase() + "</li>"
+
+        })
+    })
+}
+
 document.querySelector('#check').addEventListener('click', async function() {
     if (currentMode == 'reference') {
         getTrackingWithReference(showStatus)
@@ -114,3 +123,5 @@ document.querySelector('#check').addEventListener('click', async function() {
         getTrackingWithNumber(showStatus)
     }
 })
+
+loadHistory()
