@@ -39,6 +39,13 @@ function getTrackingWithReference(whenDone) {
             loggedHistory.insert(log, function(err, doc) {
                 console.log('Inserted', doc.reference, 'with ID', doc._id);
             })
+
+            document.getElementById('history').className= 'flash'
+            setTimeout(() => {
+                document.getElementById('history').className= 'stop_flash'
+            }, 1000)
+
+            loadHistory()
         }
         catch (error) {
             status = "INVALID"
@@ -76,8 +83,15 @@ function getTrackingWithNumber(whenDone) {
             }
 
             loggedHistory.insert(log, function(err, doc) {
-                console.log('Inserted', doc.reference, 'with ID', doc._id);
+                console.log('Inserted', doc.tracking_number, 'with ID', doc._id);
             })
+
+            document.getElementById('history').className= 'flash'
+            setTimeout(() => {
+                document.getElementById('history').className= 'stop_flash'
+            }, 1000)
+            
+            loadHistory()
         }
         catch (error) {
             status = "INVALID"
@@ -107,6 +121,31 @@ function changeMode() {
     }
 }
 
+function loadHistory() {
+    document.getElementById('list').innerHTML = ""
+
+    loggedHistory.find({}, function(err, doc) {
+        doc.forEach(element => {
+            var historyItemRef = '<li>' + element.status.toUpperCase() + ': <a onclick="refreshStatus()">' + element.reference + '</a></li>'
+            var historyItemTrack = '<li>' + element.status.toUpperCase() + ': <a onclick="refreshStatus()">' + element.tracking_number + '</a></li>'
+
+            if (element.reference) {
+                document.getElementById('list').innerHTML += historyItemRef
+            }
+            else if (element.tracking_number) {
+                document.getElementById('list').innerHTML += historyItemTrack
+            }
+            else {
+                console.log("Error! Not a tracking type.")
+            }
+        })
+    })
+}
+
+function refreshStatus() {
+
+}
+
 document.querySelector('#check').addEventListener('click', async function() {
     if (currentMode == 'reference') {
         getTrackingWithReference(showStatus)
@@ -114,3 +153,5 @@ document.querySelector('#check').addEventListener('click', async function() {
         getTrackingWithNumber(showStatus)
     }
 })
+
+loadHistory()
