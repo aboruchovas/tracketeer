@@ -128,10 +128,9 @@ function getTrackingWithNumber(whenDone, numberToUpdate) {
             // update its status
             var logToUpdate
 
-            loggedHistory.find({ type: "ref", tracking_number: numberToUpdate }, function(err, doc) {
+            loggedHistory.find({ type: "track_num", tracking_number: numberToUpdate }, function(err, doc) {
                 logToUpdate = doc[0]
                 updateLog()
-                console.log(err)
             })
             
             function updateLog() {
