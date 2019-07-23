@@ -15,6 +15,7 @@ function createWindow () {
 
   mainWindow.loadFile('index.html')
   mainWindow.setResizable(false)
+  mainWindow.setFullScreenable(false)
 
   // Open the DevTools.
   mainWindow.webContents.openDevTools()
