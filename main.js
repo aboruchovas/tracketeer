@@ -15,10 +15,10 @@ function createWindow () {
 
   mainWindow.loadFile('index.html')
   mainWindow.setResizable(false)
-  mainWindow.setFullScreenable(false)
+  mainWindow.setMaximizable(false)
 
   // Open the DevTools.
-  mainWindow.webContents.openDevTools()
+  // mainWindow.webContents.openDevTools()
 
   mainWindow.on('closed', function () {
     mainWindow = null
