@@ -13,7 +13,7 @@
                 <h1 class="small_title">UPS</h1>
                 <form action="#" id="status_form">
                     <div>
-                        <input type="text" id="tracking" placeholder="ORDER NUMBER">
+                        <input type="text" id="tracking_input" placeholder="ORDER NUMBER">
                         <div>
                             <select id="tracking_mode" onchange="changeMode()">
                                 <option value="reference">Order number (Supreme)</option>
@@ -22,7 +22,7 @@
                         </div>
                     </div>
                     <div style="text-align: center;">
-                        <button type="button" id="check">CHECK</button>
+                        <button type="button" id="check_button">CHECK</button>
                     </div>
                     <div id="status"></div>
                 </form>
@@ -31,7 +31,7 @@
             <div id="tracking_history">
                 <h1 class="small_title">HISTORY</h1>
                 <div id="history">
-                    <ul id="list">
+                    <ul id="log_list">
                     </ul>
                 </div>
             </div>
