@@ -10,7 +10,7 @@ function getTrackingWithReference(whenDone, referenceToUpdate) {
     (async () => {
         const browser = await puppeteer.launch({ headless: true })
         const page = await browser.newPage()
-        const ref = document.querySelector('#tracking').value
+        const ref = document.querySelector('#tracking_input').value
       
         // go to UPS tracking page
         await page.goto('https://www.ups.com/track?loc=en_US&requester=ST/')
@@ -81,7 +81,7 @@ function getTrackingWithNumber(whenDone, numberToUpdate) {
     (async () => {
         const browser = await puppeteer.launch({ headless: true })
         const page = await browser.newPage()
-        const num = document.querySelector('#tracking').value
+        const num = document.querySelector('#tracking_input').value
       
         // go to UPS tracking page
         await page.goto('https://www.ups.com/track?loc=en_US&requester=ST/')
@@ -147,14 +147,14 @@ function showStatus(status) {
 
 function changeMode() {
     document.getElementById('status').innerHTML = null
-    document.getElementById('tracking').value = null
+    document.getElementById('tracking_input').value = null
 
     const mode = document.getElementById('tracking_mode').value
     if (mode === 'reference') {
-        document.getElementById('tracking').placeholder = 'ORDER NUMBER'
+        document.getElementById('tracking_input').placeholder = 'ORDER NUMBER'
         currentMode = 'reference'
     } else if (mode === 'track_num') {
-        document.getElementById('tracking').placeholder = 'TRACKING NUMBER'
+        document.getElementById('tracking_input').placeholder = 'TRACKING NUMBER'
         currentMode = 'track_num'
     }
 }
