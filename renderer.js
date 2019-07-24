@@ -1,4 +1,5 @@
 const puppeteer = require("puppeteer")
+
 var Datastore = require('nedb')
 var loggedHistory = new Datastore({ filename: 'history.db', autoload: true })
 
@@ -20,7 +21,7 @@ function getTrackingWithReference(whenDone, referenceToUpdate) {
         // type in order number and choose UK region
         await page.waitForSelector('#trkShipmentReference')
 
-        // if no param supplied, track using inputted value
+        // if no param supplied, track using inputted value, otherwise use clicked on value
         if (typeof referenceToUpdate === 'undefined') {
             // 12422532 is an example of order number
             await page.type('#trkShipmentReference', ref)
@@ -53,10 +54,7 @@ function getTrackingWithReference(whenDone, referenceToUpdate) {
                 status: status
             }
 
-            loggedHistory.insert(log, function(err, doc) {
-                console.log('added', doc.reference, 'with ID', doc._id);
-            })
-
+            loggedHistory.insert(log)
             loadHistory()
         } else if (isValid) {
             // update its status
@@ -88,7 +86,7 @@ function getTrackingWithNumber(whenDone, numberToUpdate) {
         // go to UPS tracking page
         await page.goto('https://www.ups.com/track?loc=en_US&requester=ST/')
 
-        // if no param supplied, track using inputted value
+        // if no param supplied, track using inputted value, otherwise use clicked on value
         if (typeof numberToUpdate === 'undefined') {
             // 1ZA612Y5DK92663860 is an example of tracking number
             await page.type('#stApp_trackingNumber', num)
@@ -119,10 +117,7 @@ function getTrackingWithNumber(whenDone, numberToUpdate) {
                 status: status
             }
 
-            loggedHistory.insert(log, function(err, doc) {
-                console.log('added', doc.tracking_number, 'with ID', doc._id);
-            })
-
+            loggedHistory.insert(log)
             loadHistory()
         } else if (isValid) {
             // update its status
@@ -155,30 +150,32 @@ function changeMode() {
     document.getElementById('tracking').value = null
 
     const mode = document.getElementById('tracking_mode').value
-    if (mode == 'reference') {
+    if (mode === 'reference') {
         document.getElementById('tracking').placeholder = 'ORDER NUMBER'
         currentMode = 'reference'
-    } else if (mode == 'track_num') {
+    } else if (mode === 'track_num') {
         document.getElementById('tracking').placeholder = 'TRACKING NUMBER'
         currentMode = 'track_num'
     }
 }
 
 function loadHistory() {
-    document.getElementById('list').innerHTML = ""
+    document.getElementById('log_list').innerHTML = ""
 
+    // find and show all logs to DOM
     loggedHistory.find({}, function(err, doc) {
         doc.forEach(element => {
-            var historyItemRef = '<li>' + element.status.toUpperCase() + ': <a onclick="getTrackingWithReference(showStatus, ' + "'" + element.reference + "'" + ')">' + element.reference + '</a></li>' // FIX THIS DESGUSTENG
-            var historyItemTrack = '<li>' + element.status.toUpperCase() + ': <a onclick="getTrackingWithNumber(showStatus, ' + "'" + element.tracking_number + "'" + ')">' + element.tracking_number + '</a></li>' // FIX THIS DESGUSTENG
+            var historyItemRef = '<li>' + element.status.toUpperCase() + ': <a onclick="getTrackingWithReference(showStatus, ' + 
+                                "'" + element.reference + "'" + ')">' + element.reference + '</a></li>'
+
+            var historyItemTrack = '<li>' + element.status.toUpperCase() + ': <a onclick="getTrackingWithNumber(showStatus, ' + 
+                                "'" + element.tracking_number + "'" + ')">' + element.tracking_number + '</a></li>'
 
             if (element.reference) {
-                document.getElementById('list').innerHTML += historyItemRef
-            }
-            else if (element.tracking_number) {
-                document.getElementById('list').innerHTML += historyItemTrack
-            }
-            else {
+                document.getElementById('log_list').innerHTML += historyItemRef
+            } else if (element.tracking_number) {
+                document.getElementById('log_list').innerHTML += historyItemTrack
+            } else {
                 console.log("Error! Not a tracking type.")
             }
         })
@@ -188,6 +185,7 @@ function loadHistory() {
 function animateStatus() {
     // flash history box after log is added
     document.getElementById('history').className = 'flash'
+
     setTimeout(() => {
         document.getElementById('history').className = 'stop_flash'
     }, 1000)
@@ -200,12 +198,12 @@ function animateStatus() {
     }, 1000)
 }
 
-document.querySelector('#check').addEventListener('click', async function() {
-    if (currentMode == 'reference') {
+document.querySelector('#check_button').addEventListener('click', async function () {
+    if (currentMode === 'reference') {
         getTrackingWithReference(showStatus)
-    } else if (currentMode == 'track_num') {
+    } else if (currentMode === 'track_num') {
         getTrackingWithNumber(showStatus)
     }
 })
 
-loadHistory()
+loadHistory() // load history on start up
