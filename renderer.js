@@ -46,6 +46,8 @@ function getTrackingWithReference(whenDone, referenceToUpdate) {
             isValid = false
         }
 
+        await browser.close()
+
         // if valid status, then add to database and refresh history log
         if (isValid && (typeof referenceToUpdate === 'undefined')) {
             var log = {
@@ -54,8 +56,22 @@ function getTrackingWithReference(whenDone, referenceToUpdate) {
                 status: status
             }
 
-            loggedHistory.insert(log)
-            loadHistory()
+            // check if log already exists
+            if (loggedHistory.find({ type: "ref", reference: ref })) {
+                // update if exists
+                var logToUpdate
+
+                loggedHistory.find({ type: "ref", reference: ref }, function(err, doc) {
+                    logToUpdate = doc[0]
+                    updateLog()
+                })
+                
+                function updateLog() {
+                    loggedHistory.update({ _id: logToUpdate._id }, { $set: { status: status } })
+                }
+            } else {
+                loggedHistory.insert(log)
+            }
         } else if (isValid) {
             // update its status
             var logToUpdate
@@ -68,11 +84,9 @@ function getTrackingWithReference(whenDone, referenceToUpdate) {
             function updateLog() {
                 loggedHistory.update({ _id: logToUpdate._id }, { $set: { status: status } })
             }
-
-            loadHistory()
         }
-
-        await browser.close()
+        
+        loadHistory()
         whenDone(status)
     })()
 }
@@ -109,6 +123,8 @@ function getTrackingWithNumber(whenDone, numberToUpdate) {
             isValid = false
         }
 
+        await browser.close()
+
         // if valid status, then add to database and refresh history log
         if (isValid && (typeof numberToUpdate === 'undefined')) {
             var log = {
@@ -117,8 +133,22 @@ function getTrackingWithNumber(whenDone, numberToUpdate) {
                 status: status
             }
 
-            loggedHistory.insert(log)
-            loadHistory()
+            // check if log already exists
+            if (loggedHistory.find({ type: "track_num", tracking_number: num })) {
+                // update if exists
+                var logToUpdate
+
+                loggedHistory.find({ type: "track_num", tracking_number: num }, function(err, doc) {
+                    logToUpdate = doc[0]
+                    updateLog()
+                })
+                
+                function updateLog() {
+                    loggedHistory.update({ _id: logToUpdate._id }, { $set: { status: status } })
+                }
+            } else {
+                loggedHistory.insert(log)
+            }
         } else if (isValid) {
             // update its status
             var logToUpdate
@@ -131,11 +161,9 @@ function getTrackingWithNumber(whenDone, numberToUpdate) {
             function updateLog() {
                 loggedHistory.update({ _id: logToUpdate._id }, { $set: { status: status } })
             }
-
-            loadHistory()
         }
 
-        await browser.close()
+        loadHistory()
         whenDone(status)
     })()
 }
