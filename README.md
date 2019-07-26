@@ -1,5 +1,5 @@
 # tracketeer
-an electron app to help track products using tracking numbers or order numbers (for supreme)
+an electron app to help track products using tracking numbers or order numbers (for supreme), currently only supports UPS
 
 ![tracketeer UI](https://github.com/aboruchovas/tracketeer/blob/master/images/progress/implementing_history4.png)
 
