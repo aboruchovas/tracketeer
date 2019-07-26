@@ -58,32 +58,12 @@ function getTrackingWithReference(whenDone, referenceToUpdate) {
 
             // check if log already exists
             if (loggedHistory.find({ type: "ref", reference: ref })) {
-                // update if exists
-                var logToUpdate
-
-                loggedHistory.find({ type: "ref", reference: ref }, function(err, doc) {
-                    logToUpdate = doc[0]
-                    updateLog()
-                })
-                
-                function updateLog() {
-                    loggedHistory.update({ _id: logToUpdate._id }, { $set: { status: status } })
-                }
+                updateReference(ref)
             } else {
                 loggedHistory.insert(log)
             }
         } else if (isValid) {
-            // update its status
-            var logToUpdate
-
-            loggedHistory.find({ type: "ref", reference: referenceToUpdate }, function(err, doc) {
-                logToUpdate = doc[0]
-                updateLog()
-            })
-            
-            function updateLog() {
-                loggedHistory.update({ _id: logToUpdate._id }, { $set: { status: status } })
-            }
+            updateReference(referenceToUpdate)
         }
         
         loadHistory()
@@ -135,32 +115,12 @@ function getTrackingWithNumber(whenDone, numberToUpdate) {
 
             // check if log already exists
             if (loggedHistory.find({ type: "track_num", tracking_number: num })) {
-                // update if exists
-                var logToUpdate
-
-                loggedHistory.find({ type: "track_num", tracking_number: num }, function(err, doc) {
-                    logToUpdate = doc[0]
-                    updateLog()
-                })
-                
-                function updateLog() {
-                    loggedHistory.update({ _id: logToUpdate._id }, { $set: { status: status } })
-                }
+                updateTrackNum(num)
             } else {
                 loggedHistory.insert(log)
             }
         } else if (isValid) {
-            // update its status
-            var logToUpdate
-
-            loggedHistory.find({ type: "track_num", tracking_number: numberToUpdate }, function(err, doc) {
-                logToUpdate = doc[0]
-                updateLog()
-            })
-            
-            function updateLog() {
-                loggedHistory.update({ _id: logToUpdate._id }, { $set: { status: status } })
-            }
+            updateTrackNum(numberToUpdate)
         }
 
         loadHistory()
@@ -168,23 +128,55 @@ function getTrackingWithNumber(whenDone, numberToUpdate) {
     })()
 }
 
+function updateReference(ref) {
+    // update if exists
+    var logToUpdate
+
+    loggedHistory.find({ type: "ref", reference: ref }, function(err, doc) {
+        logToUpdate = doc[0]
+        updateLog()
+    })
+    
+    function updateLog() {
+        loggedHistory.update({ _id: logToUpdate._id }, { $set: { status: status } })
+    }
+}
+
+function updateTrackNum(num) {
+    // update if exists
+    var logToUpdate
+
+    loggedHistory.find({ type: "track_num", tracking_number: num }, function(err, doc) {
+        logToUpdate = doc[0]
+        updateLog()
+    })
+    
+    function updateLog() {
+        loggedHistory.update({ _id: logToUpdate._id }, { $set: { status: status } })
+    }
+}
+
 function showStatus(status) {
     document.getElementById('status').innerHTML = status.toUpperCase()
     animateStatus()
 }
 
-function changeMode() {
-    document.getElementById('status').innerHTML = null
-    document.getElementById('tracking_input').value = null
+function animateStatus() {
+    // flash history box after log is added
+    if (document.getElementById('status').textContent !== "INVALID") {
+        document.getElementById('history').className = 'flash'
 
-    const mode = document.getElementById('tracking_mode').value
-    if (mode === 'reference') {
-        document.getElementById('tracking_input').placeholder = 'ORDER NUMBER'
-        currentMode = 'reference'
-    } else if (mode === 'track_num') {
-        document.getElementById('tracking_input').placeholder = 'TRACKING NUMBER'
-        currentMode = 'track_num'
+        setTimeout(() => {
+            document.getElementById('history').className = 'stop_flash'
+        }, 1000)
     }
+    
+    // jiggle status text
+    document.getElementById('status').style.transform = "translateX(-20px)"
+
+    setTimeout(() => {
+        document.getElementById('status').style.transform = 'translateX(0px)'
+    }, 1000)
 }
 
 function loadHistory() {
@@ -210,22 +202,18 @@ function loadHistory() {
     })
 }
 
-function animateStatus() {
-    // flash history box after log is added
-    if (document.getElementById('status').textContent !== "INVALID") {
-        document.getElementById('history').className = 'flash'
+function changeMode() {
+    document.getElementById('status').innerHTML = null
+    document.getElementById('tracking_input').value = null
 
-        setTimeout(() => {
-            document.getElementById('history').className = 'stop_flash'
-        }, 1000)
+    const mode = document.getElementById('tracking_mode').value
+    if (mode === 'reference') {
+        document.getElementById('tracking_input').placeholder = 'ORDER NUMBER'
+        currentMode = 'reference'
+    } else if (mode === 'track_num') {
+        document.getElementById('tracking_input').placeholder = 'TRACKING NUMBER'
+        currentMode = 'track_num'
     }
-    
-    // jiggle status text
-    document.getElementById('status').style.transform = "translateX(-20px)"
-
-    setTimeout(() => {
-        document.getElementById('status').style.transform = 'translateX(0px)'
-    }, 1000)
 }
 
 document.querySelector('#check_button').addEventListener('click', async function () {
