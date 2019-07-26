@@ -212,12 +212,14 @@ function loadHistory() {
 
 function animateStatus() {
     // flash history box after log is added
-    document.getElementById('history').className = 'flash'
+    if (document.getElementById('status').textContent !== "INVALID") {
+        document.getElementById('history').className = 'flash'
 
-    setTimeout(() => {
-        document.getElementById('history').className = 'stop_flash'
-    }, 1000)
-
+        setTimeout(() => {
+            document.getElementById('history').className = 'stop_flash'
+        }, 1000)
+    }
+    
     // jiggle status text
     document.getElementById('status').style.transform = "translateX(-20px)"
 
