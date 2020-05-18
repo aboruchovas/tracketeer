@@ -6,6 +6,13 @@ an electron app to help track products using tracking numbers or order numbers (
 ## technologies used
 this project uses NodeJS, Electron, HTML, CSS, and NeDB to manage the history of previously searched numbers
 
+## installation
+run 
+`npm install` 
+to download the required packages, then 
+`npm start`
+to launch the app!
+
 ## progress
 to see how the project progressed in terms of the UI, check the **my_progress** folder
 
