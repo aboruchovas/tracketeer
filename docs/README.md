@@ -1,7 +1,7 @@
 # tracketeer
 an electron app to help track products using tracking numbers or order numbers (for Supreme), currently only supports UPS
 
-![tracketeer UI](https://github.com/aboruchovas/tracketeer/blob/master/images/progress/implementing_history4.png)
+![tracketeer UI](https://github.com/aboruchovas/tracketeer/blob/master/docs/my_progress/implementing_history4.png)
 
 ## technologies used
 this project uses NodeJS, Electron, HTML, CSS, and NeDB to manage the history of previously searched numbers
